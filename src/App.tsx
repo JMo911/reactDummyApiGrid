@@ -7,6 +7,8 @@ import UserInterface from './interfaces/userInterface';
 
 function App() {
   const [apiData, setApiData] = useState<UserInterface[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredApiData, setFilteredApiData] = useState<UserInterface[]>([]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -17,16 +19,31 @@ function App() {
     fetchData();
   }, [])
 
+  const setUserSearchTerm = (term: string) => {
+    setSearchTerm(term);
+  };
+
+  useEffect(() => {
+    const executeUserQuery = () => {
+      const query = searchTerm;
+      const filteredList = apiData.filter((user: UserInterface) => user.first_name.toLowerCase().indexOf(query.toLowerCase()) > -1);
+      setFilteredApiData(filteredList);
+    }
+    executeUserQuery();
+  }, [apiData, searchTerm])
+
+
+
   return (
     <div>
       <div>
         <Introduction />
       </div>
       <div>
-      <SearchForm />
+      <SearchForm setUserSearchTerm={setUserSearchTerm} />
       </div>
       <div>
-        <DataTable data={apiData} />
+        <DataTable data={searchTerm ? filteredApiData: apiData} />
       </div>
       <div>
         pagination widget goes here
