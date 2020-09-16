@@ -40,9 +40,9 @@ function App() {
     setCurrentPage(pageNumber);
   };
 
-  // when user clicks on a number, we need to grab a slice of data that corresponds to the records that should be on that page i.e. if we want 10 records per page and click on page 1, then show records 0-9..
-// 9 comes from page number * records per page -1
-// 0 comes from index of last record - records per page
+  const updateRecordsPerPage = (recordsPerPage: number) => {
+    setRecordsPerPage(recordsPerPage);
+  };
 
   useEffect(() => {
     const indexOfLastRecord = currentPage * recordsPerPage;
@@ -66,7 +66,7 @@ function App() {
         <DataTable data={searchTerm ? filteredApiData: paginatedData} />
       </div>
       <div>
-        <Pagination totalRecords={searchTerm ? filteredApiData.length: apiData.length} recordsPerPage={recordsPerPage} updateCurrentPage={updateCurrentPage} />
+        <Pagination totalRecords={searchTerm ? filteredApiData.length: apiData.length} recordsPerPage={recordsPerPage} updateCurrentPage={updateCurrentPage} updateRecordsPerPage={updateRecordsPerPage} />
       </div>
     </div>
   );

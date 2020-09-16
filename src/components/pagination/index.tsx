@@ -6,7 +6,7 @@ import './styles.css'
 // 9 comes from page number * records per page -1
 // 0 comes from index of last record - records per page
 
-export default function Pagination({totalRecords, recordsPerPage, updateCurrentPage}: any) {
+export default function Pagination({totalRecords, recordsPerPage, updateCurrentPage, updateRecordsPerPage}: any) {
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(totalRecords/recordsPerPage); i++) {
         pageNumbers.push(i);
@@ -15,8 +15,14 @@ export default function Pagination({totalRecords, recordsPerPage, updateCurrentP
     return (
         <div className='pagination-wrapper'>
             {pageNumbers.map(page => {
-                return <button key={page} className="btn btn-info" onClick={(e) => updateCurrentPage(page)}>{page}</button>
+                return <button key={page} className="btn btn-info" onClick={() => updateCurrentPage(page)}>{page}</button>
             })}
+            <label htmlFor="records-per-page">Records per page:</label>
+            <select name="records-per-page" id="records-per-page" onChange={(e) => updateRecordsPerPage(e.target.value)}>
+                <option value="1">1</option>
+                <option value="2" selected>2</option>
+                <option value="3">3</option>
+            </select>
         </div>
     )
 }
