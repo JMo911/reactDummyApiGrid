@@ -1,8 +1,8 @@
 import React from 'react';
 import './styles.css';
-import UserInterface from '../../interfaces/userInterface';
 
-export default function DataTable({data}: any) {
+export default function DataTable({data, updateFilterQueries}: any) {
+    
     return (
         <div className='table-wrapper'>
             <table className="table table-striped">
@@ -11,7 +11,8 @@ export default function DataTable({data}: any) {
                         {
                             data.length && Object.keys(data[0]).map(column => {
                                 return <th scope="col">
-                                    {column}
+                                    <div>{column}</div>
+                                    <input type="text" onChange={(e) => updateFilterQueries(column, e.target.value)} />
                                 </th>
                             })
                         }

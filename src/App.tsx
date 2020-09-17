@@ -13,6 +13,13 @@ function App() {
   const [recordsPerPage, setRecordsPerPage] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginatedData, setPaginatedData] = useState<UserInterface[]>([]);
+  const [filterQueries, setFilterQueries] = useState<any>({
+    "id": "",
+    "email": "",
+    "first_name": "",
+    "last_name": "",
+    "avatar": ""
+  });
 
   useEffect(() => {
     const fetchData = () => {
@@ -44,6 +51,12 @@ function App() {
     setRecordsPerPage(recordsPerPage);
   };
 
+  const updateFilterQueries = (column: any, term: any) => {
+    const clonedQueries = {...filterQueries};
+    clonedQueries[column] = term
+    setFilterQueries(clonedQueries);
+  };
+
   useEffect(() => {
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
@@ -54,6 +67,30 @@ function App() {
     pagination();
   }, [apiData, recordsPerPage, currentPage]);
 
+  // useEffect(() => {
+  //   // const executeFilterQueries = () => {
+  //   //   return Object.keys(filterQueries).every((key) => user[key].toLowerCase().indexOf(query.toLowerCase()) > -1);
+
+  //   // }
+  //   // executeFilterQueries();
+
+  //   // const executeFilterQueries = () => {
+  //   //   let filteredList: UserInterface[] = [];
+  //   //   if(filterQueries.first_name.split("").length > 0) {
+  //   //     filteredList = paginatedData.filter((user: UserInterface) => user.first_name.toLowerCase().indexOf(filterQueries.first_name.toLowerCase()) > -1)
+  //   //     console.log(filterQueries.first_name.toLowerCase())
+  //   //   }
+
+
+  //   //   // const filteredList = paginatedData.filter((user: UserInterface) => user.first_name.toLowerCase().indexOf(filterQueries['first_name'].toLowerCase()) > -1)
+  //   //   setFilteredApiData(filteredList);
+  //   //   // console.log(filterQueries.first_name.toLowerCase())
+  //   // }
+  //   // executeFilterQueries();
+
+    
+  // }, [paginatedData, filterQueries]);
+
   return (
     <div>
       <div>
@@ -63,10 +100,10 @@ function App() {
       <SearchForm setUserSearchTerm={setUserSearchTerm} />
       </div>
       <div>
-        <DataTable data={searchTerm ? filteredApiData: paginatedData} />
+        <DataTable data={searchTerm ? filteredApiData: paginatedData} updateFilterQueries={updateFilterQueries} />
       </div>
       <div>
-        <Pagination totalRecords={searchTerm ? filteredApiData.length: apiData.length} recordsPerPage={recordsPerPage} updateCurrentPage={updateCurrentPage} updateRecordsPerPage={updateRecordsPerPage} />
+        <Pagination totalRecords={apiData.length} recordsPerPage={recordsPerPage} updateCurrentPage={updateCurrentPage} updateRecordsPerPage={updateRecordsPerPage} />
       </div>
     </div>
   );
